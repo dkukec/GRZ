@@ -1,0 +1,28 @@
+﻿<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="podrucje">Naselje: </label>
+            <select class="form-control ng-ignore"
+                    id="podrucje"
+                    ng-model="ctrl.selectedNaselje"
+                    ng-options="naselje.nazivBrojRealizacija for naselje in ctrl.naselja track by naselje.Id"
+                    ng-change="ctrl.onNaseljeChange(ctrl.selectedNaselje)"></select>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="podrucje">Lokacija: </label>
+            <select class="form-control ng-ignore"
+                    id="podrucje"
+                    ng-model="ctrl.selectedLokacija"
+                    ng-options="lokacija.nazivBrojRealizacija for lokacija in ctrl.lokacijeList track by lokacija.Id"
+                    ng-change="ctrl.onLokacijaChange(ctrl.selectedLokacija)"></select>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="podrucje">Datum: </label>
+            <input type="text" format="dd.MM.yyyy." class="form-control" partial="true" view="date" min-view="date" max-view="date" ng-model="ctrl.datum" auto-close="false" disabled date-time>
+        </div>
+    </div>
+</div>

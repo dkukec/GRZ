@@ -1,0 +1,4 @@
+﻿<div role="alert" ng-show="vm.visible" ng-class="{'alert': true, 'alert-danger': vm.isError, 'alert-success': !vm.isError}">
+    <button type="button" class="close" ng-click="vm.close()"><span aria-hidden="true">&times;</span></button>
+    {{vm.message}}
+</div>

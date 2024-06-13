@@ -1,0 +1,52 @@
+﻿{{ model.Ignore = "" }}
+    <form name="kolicina" ng-controller="adminDialogDodajKolicinuController as ctrl">
+        <div class="ngdialog-message">
+            <h3>Dodavanje nove količine</h3>
+            <div class="form-group">
+                <div class="row">
+                    <label class="col-sm-12 control-label">Lokacija</label>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <input ng-disabled="true" ng-required="true" type="text" ng-model="ngDialogData.Lokacija.Naziv" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <label class="col-sm-12 control-label">Tip</label>
+                    <div class="col-sm-12">
+                        <select class="form-control" ng-model="model.TipId">
+                            <option ng-disabled="ctrl.isDisabledTip(ngDialogData, tip)" ng-repeat="tip in ngDialogData.Tipovi" value="{{tip.Id}}">{{tip.Naziv}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <label class="col-sm-12 control-label">Vrsta</label>
+                    <div class="col-sm-12">
+                        <select class="form-control" ng-disabled="!model.TipId" ng-model="model.VrstaId">
+                            <option ng-disabled="ctrl.isDisabledVrsta(ngDialogData, vrsta)" ng-repeat="vrsta in ctrl.getTip(model.TipId, ngDialogData.Tipovi).Vrste" value="{{vrsta.Id}}">{{vrsta.Naziv}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <label class="col-sm-10 control-label">Količina</label>
+                    <div class="col-sm-10">
+                        <input ng-disabled="!model.VrstaId" ng-required="true" type="text" min="1" class="form-control" ng-model="model.Broj" />
+                    </div>
+                    <div class="col-sm-2">
+                    {{ctrl.getMjernaJedinica(ngDialogData.Tipovi, model.TipId, model.VrstaId)}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ngdialog-buttons form-group">
+            <button ng-disabled="!kolicina.$valid" type="button" class="btn btn-primary" ng-click="confirm(model)">Spremi</button>
+            <button type="button" class="btn btn-default" ng-click="closeThisDialog('button')">Odustani</button>
+        </div>
+    </form>
+<gzr-active-menu menu="postavke"></gzr-active-menu>

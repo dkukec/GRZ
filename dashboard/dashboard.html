@@ -1,0 +1,119 @@
+﻿<!-- BEGIN PAGE SPINNER -->
+<div ng-show="dashboardCtrl.Loading" id="loading">
+    <div ng-spinner-bar class="page-spinner-bar">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
+</div>
+<!-- END PAGE SPINNER -->
+<div class="gzr-content">
+    <div class="gzr-content">
+        <h2 ng-hide="dashboardCtrl.Loading">Pregled realizacije</h2>
+
+        <div id="filter"></div>
+
+        <div ng-hide="dashboardCtrl.Loading" id="results">
+
+            <div>
+                <!--        <div ng-repeat="kalendar in dashboardCtrl.kalendari" class="calendarList">
+                    <datepicker starting-day="1" custom-class="dashboardCtrl.getClass(date, mode)" show-weeks="false" view="date" ng-model="SelectedDate[kalendar.index]" min-view="date" init-date="kalendar.minDate" watch-direct-changes="true" min-date="kalendar.minDate" max-date="kalendar.maxDate"></datepicker>
+                </div>-->
+
+                <div ng-repeat="kalendar in dashboardCtrl.kalendari" class="calendarList" ng-if="dashboardCtrl.prethodniMjesec(3) == kalendar.index">
+                    <datepicker starting-day="1" custom-class="dashboardCtrl.getClass(date, mode)" show-weeks="false" view="date" ng-model="SelectedDate[kalendar.index]" min-view="date" init-date="kalendar.minDate" watch-direct-changes="true" min-date="kalendar.minDate" max-date="kalendar.maxDate"></datepicker>
+                </div>
+
+                <div ng-repeat="kalendar in dashboardCtrl.kalendari" class="calendarList" ng-if="dashboardCtrl.prethodniMjesec(2) == kalendar.index">
+                    <datepicker starting-day="1" custom-class="dashboardCtrl.getClass(date, mode)" show-weeks="false" view="date" ng-model="SelectedDate[kalendar.index]" min-view="date" init-date="kalendar.minDate" watch-direct-changes="true" min-date="kalendar.minDate" max-date="kalendar.maxDate"></datepicker>
+                </div>
+                <div ng-repeat="kalendar in dashboardCtrl.kalendari" class="calendarList" ng-if="dashboardCtrl.prethodniMjesec(1) == kalendar.index">
+                    <datepicker starting-day="1" custom-class="dashboardCtrl.getClass(date, mode)" show-weeks="false" view="date" ng-model="SelectedDate[kalendar.index]" min-view="date" init-date="kalendar.minDate" watch-direct-changes="true" min-date="kalendar.minDate" max-date="kalendar.maxDate"></datepicker>
+                </div>
+
+
+                <div ng-repeat="kalendar in dashboardCtrl.kalendari" class="calendarList" ng-if="dashboardCtrl.trenutniMjesec() == kalendar.index">
+                    <datepicker starting-day="1" custom-class="dashboardCtrl.getClass(date, mode)" show-weeks="false" view="date" ng-model="SelectedDate[kalendar.index]" min-view="date" init-date="kalendar.minDate" watch-direct-changes="true" min-date="kalendar.minDate" max-date="kalendar.maxDate"></datepicker>
+                </div>
+
+            </div>
+            <h2>Plan</h2>
+            <div class="col-md-12">
+
+                <div class="form-group">
+                    <label for="godina">Današnji datum: {{ dashboardCtrl.Trenutni.Datum | date: "dd.MM.yyyy" }}</label>
+                </div>
+                <div class="form-group" ng-show="dashboardCtrl.Trenutni.Plan.Id">
+                    <label for="datum">
+                        <a class="" href="#/unos/{{ dashboardCtrl.Trenutni.Plan.Id }}">Aktivni plan: {{ dashboardCtrl.Trenutni.Plan.Godina }} - {{ dashboardCtrl.Trenutni.Plan.Revizija }}</a>
+                </div>
+               <br />
+
+                <div class="form-group" ng-show="dashboardCtrl.Trenutni.Revizije.length > 0">
+                    <label for="godina">Nezaključana revizija</label>
+                    <table class="table">
+                        <tr ng-repeat="plan in dashboardCtrl.Trenutni.NezakljucaneRevizije">
+                            <td><a class="" href="#/unos/{{ plan.Id }}">{{ plan.Godina }} - {{ plan.Revizija }}</a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <h2 ng-if="dashboardCtrl.data">Pregled realiziranog {{ dashboardCtrl.dateFrom | date: "dd.MM.yyyy" }} - {{ dashboardCtrl.Trenutni.Datum | date: "dd.MM.yyyy" }}</h2>
+            <div class="" ng-if="dashboardCtrl.data">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="podrucje">Naselje: </label>
+                        <select class="form-control"
+                                id="podrucje"
+                                ng-model="dashboardCtrl.Naselje"
+                                ng-options="naselje.Naziv for naselje in dashboardCtrl.GetNaselja()"
+                                ng-change="dashboardCtrl.changeDsNaselje()"></select>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="podrucje">Lokacija: </label>
+                        <select class="form-control"
+                                id="podrucje"
+                                ng-model="dashboardCtrl.Lokacija"
+                                ng-options="lokacija.Naziv for lokacija in dashboardCtrl.GetLokacije()"
+                                ng-change="dashboardCtrl.changeDs()"></select>
+                    </div>
+                </div>
+            </div>
+            
+            <fieldset class="col-md-12" ng-if="dashboardCtrl.data">
+                <legend>Aktivnosti: </legend>
+                <table ng-table-dynamic="dashboardCtrl.tableParams with dashboardCtrl.cols" class="table table-condensed table-bordered table-hover">
+                    <colgroup>
+                        <col width="60%" />
+                        <col width="5%" />
+                        <col width="5%" />
+                    </colgroup>
+                    <tr class="ng-table-group" ng-repeat-start="group in $groups">
+                        <td colspan="3">
+                            <a href="" ng-click="group.$hideRows = !group.$hideRows">
+                                <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': group.$hideRows, 'glyphicon-chevron-down': !group.$hideRows }"></span>
+                                <strong>{{ group.value }}</strong>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr class="ng-hide" ng-hide="group.$hideRows"></tr>
+
+
+                    <tr ng-hide="group.$hideRows" ng-repeat="aktivnost in group.data" ng-repeat-end>
+                        <td>{{aktivnost.Naziv }}</td>
+                        <td>{{aktivnost.Kolicina}} {{aktivnost.MjernaJedinica}}</td>
+                        <td class="text-center">
+                            {{aktivnost.Datum | date:'dd.MM.yyyy'}}
+                        </td>
+                    </tr>
+                </table>
+                <gzr-tooltip selector="'.ng-table .ng-table-group-toggle'" title="'Prikaži / sakrij grupe'" placement="'top'"></gzr-tooltip>
+            </fieldset>
+
+        </div>
+    </div>
+</div>
+<gzr-active-menu menu="pocetna"></gzr-active-menu>

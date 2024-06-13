@@ -1,0 +1,44 @@
+﻿<!-- BEGIN PAGE SPINNER -->
+<div ng-hide="registerCtrl.List" id="loading">
+    <div ng-spinner-bar class="page-spinner-bar">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
+</div>
+<!-- END PAGE SPINNER -->
+<div class="gzr-content" ng-show="registerCtrl.List">
+    <fieldset>
+        <h2>Standardne aktivnosti</h2>
+        <br />
+        <fieldset class="standardne-aktivnosti">
+            <div class="col-md-3" ng-repeat="tip in registerCtrl.Tipovi">
+                <input ng-change="registerCtrl.applyFilter()" id="tip_{{tip.Id}}" type="checkbox" ng-model="tip.Aktivno" />
+                <label for="tip_{{tip.Id}}">{{ tip.Naziv }}</label>
+            </div>
+            <div class="col-md-3">
+                <input ng-change="registerCtrl.applyFilterAll()" id="grupa_all" type="checkbox" ng-model="registerCtrl.filterAll" />
+                <label for="grupa_all"><strong>Sve</strong></label>
+            </div>
+        </fieldset>
+        <div>
+            <table ng-table="registerCtrl.tableParams" show-filter="true" class="table">
+                <tr ng-repeat="aktivnost in $data">
+                    <td data-title="'Naziv'" sortable="'Naziv'" filter="{ 'Naziv': 'text' }">{{ aktivnost.Naziv }}</td>
+                    <td data-title="'Grupa aktivnosti'" sortable="'GrupaAktivnosti'" filter="{ 'GrupaAktivnosti': 'text' }">{{ aktivnost.GrupaAktivnosti }}</td>
+                    <td data-title="'Mjerna jedinica'" sortable="'MjernaJedinica.Oznaka'" filter="{ 'Oznaka': 'text' }">{{ aktivnost.MjernaJedinica.Oznaka }}</td>
+                    <td data-title="'Tipovi'" sortable="'Tipovi'" filter="{ 'Tipovi': 'text' }">{{ aktivnost.Tipovi }}</td>
+                    <td class="admin-col" data-title="''">
+                        <a class="btn btn-primary" href="#/admin/registers/standardne_aktivnosti/edit/{{ aktivnost.Id }}">Uredi</a>
+                        <button class="btn btn-danger btn-delete" href="" ng-disabled="!aktivnost.OmoguciBrisanje" ng-click="registerCtrl.remove(aktivnost)">Obriši</button>
+                    </td>
+                </tr>
+            </table>
+            <gzr-tooltip selector="'button[disabled].btn.btn-delete'" title="'Podatak nije moguće obrisati jer je povezan s ostalim podacima'" placement="'top'"></gzr-tooltip>
+            <div class="form-group">
+                <a class="btn btn-primary" href="#/admin/registers/standardne_aktivnosti/add">Dodaj</a>
+            </div>
+        </div>
+    </fieldset>
+</div>
+<gzr-active-menu menu="sifrarnici"></gzr-active-menu>

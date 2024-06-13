@@ -1,0 +1,111 @@
+﻿<h1>Usporedba planiranih i izvršenih aktivnosti za plan</h1>
+
+<button class="btn btn-primary" ng-click="usporedbaPlanaCtrl.PdfReport()" style="float: right;">
+    Pdf Prikaz
+</button>
+<div>
+    <p>{{usporedbaPlanaCtrl.Klijent}}</p>
+    <p>{{usporedbaPlanaCtrl.Revizija}}</p>
+</div>
+<div ng-repeat="obj in usporedbaPlanaCtrl.Podaci">
+    <h2>{{obj.MjestoNaziv}}</h2>
+
+    <table class="table table-striped">
+        <tbody ng-repeat="tip in obj.Tipovi">
+            <tr>
+                <td>
+                    <h3>{{tip.TipNaziv}}</h3>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div>
+                        <table class="table table-striped" style="float: right;">
+                            <thead>
+                                <colgroup>
+                                    <col width="30.3%">
+                                    <col width="30.3%">
+                                    <col width="30.40%">
+                                </colgroup>
+                                <tr>
+                                    <th>Vrsta naziv</th>
+                                    <th>Količina</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="vrsta in tip.Vrste">
+                                <tr>
+                                    <td>{{vrsta.VrstaNaziv}}
+                                    </td>
+
+                                    <td>{{vrsta.Komada}} {{vrsta.MjernaJedinicaNaziv}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <div>
+                        <table class="table table-striped" style="float: right;">
+                            <thead>
+                                <colgroup>
+                                    <col width="24%">
+                                    <col width="19%">
+                                    <col width="19%">
+                                    <col width="19%">
+                                    <col width="19%">
+                                </colgroup>
+                                <tr>
+                                    <th class="text-left ng-binding">Standardna aktivnost</th>
+                                    <th class="text-right ng-binding">Planirana količina</th>
+                                    <th class="text-right ng-binding">Izvršena količina</th>
+                                    <th class="text-right ng-binding">Planirana cijena</th>
+                                    <th class="text-right ng-binding">Izvršena cijena</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="aktivnost in tip.Aktivnosti" ng-scope>
+                                <tr>
+                                    <td class="text-left ng-binding">{{aktivnost.StandardnaAktivnostNaziv}}
+                                    </td>
+                                    <td class="text-right ng-binding">{{aktivnost.UkupnaPlaniranaKolicina }} {{aktivnost.MjernaOznaka}}
+                                    </td>
+                                    <td class="text-right ng-binding">{{aktivnost.UkupnaIzvrsenaKolicina}} {{aktivnost.MjernaOznaka}}
+                                    </td>
+                                    <td class="text-right ng-binding">{{aktivnost.UkupnaPlaniranaCijena | number:2}} kn
+                                    </td>
+                                    <td class="text-right ng-binding">{{aktivnost.UkupnaIzvrsenaCijena | number:2}} kn
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3">Ukupno: </td>
+                                    <td class="text-right ng-binding">{{tip.totalPlaniranaCijena | number:2 }} kn</td>
+                                    <td class="text-right ng-binding">{{tip.totalIzvrsenaCijena | number:2 }} kn</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+        <table class="table table-striped">
+            <tr>
+                <th class="text-right ng-binding"></th>
+               <th class="text-right ng-binding">Planirana cijena</th>
+               <th class="text-right ng-binding">Izvršena cijena</th>
+            </tr>
+        <tbody>
+            <tr>
+                <td class="text-left ng-binding">Sveukupno: {{obj.MjestoNaziv}}</td>
+               <td class="text-right ng-binding">{{obj.totalMjestoPlaniranaCijena | number:2}} kn</td>
+               <td class="text-right ng-binding">{{obj.totalMjestoIzvrsenaCijena | number:2}} kn</td>
+                </tr>
+            </tbody>
+        </table>
+</div>

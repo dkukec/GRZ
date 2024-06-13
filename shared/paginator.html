@@ -1,0 +1,15 @@
+﻿<nav>
+    <ul class="pagination">
+        <li>
+            <a href aria-label="Previous" ng-click="vm.previous()">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li ng-repeat="page in vm.pageNumbers"><a href ng-click="vm.switchToPage(page)">{{::page+1}}</a></li>
+        <li>
+            <a href="#" aria-label="Next" ng-click="vm.next()">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>

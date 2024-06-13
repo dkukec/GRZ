@@ -1,0 +1,56 @@
+﻿<!-- BEGIN PAGE SPINNER -->
+<div ng-hide="registerCtrl.List" id="loading">
+    <div ng-spinner-bar class="page-spinner-bar">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
+</div>
+<!-- END PAGE SPINNER -->
+<div class="gzr-content" ng-show="registerCtrl.List">
+    <h2>Lokacije</h2>
+    <br />
+    <fieldset>
+        <legend>Grupe lokacija</legend>
+        <div class="col-md-3" ng-repeat="grupa in registerCtrl.Grupe | orderBy: 'Naziv'">
+            <input ng-change="registerCtrl.applyFilter()" id="grupa_{{grupa.Id}}" type="checkbox" ng-model="grupa.Aktivno" />
+            <label for="grupa_{{grupa.Id}}">{{ grupa.Naziv }}</label>
+        </div>
+        <div class="col-md-3">
+            <input ng-change="registerCtrl.applyFilterAll()" id="grupa_all" type="checkbox" ng-model="registerCtrl.filterAll" />
+            <label for="grupa_all"><strong>Sve grupe</strong></label>
+        </div>
+    </fieldset>
+    <br />
+    <fieldset>
+        <legend>Naselja</legend>
+        <div class="col-md-3" ng-repeat="naselje in registerCtrl.Naselja | orderBy: 'Naziv'">
+            <input ng-change="registerCtrl.applyFilter()" id="naselje_{{naselje.Id}}" type="checkbox" ng-model="naselje.Aktivno" />
+            <label for="naselje_{{naselje.Id}}">{{ naselje.Naziv }}</label>
+        </div>
+        <div class="col-md-3">
+            <input ng-change="registerCtrl.applyFilterAllNaselje()" id="grupa_naselje_all" type="checkbox" ng-model="registerCtrl.filterAllNaselje" />
+            <label for="grupa_naselje_all"><strong>Sva naselja</strong></label>
+        </div>
+    </fieldset>
+    <br />
+    <table ng-table="registerCtrl.tableParams" show-filter="true" class="table">
+        <tr ng-repeat="lokacija in $data">
+            <div class="row">
+                <td data-title="'Naziv'" sortable="'Naziv'" filter="{ 'Naziv': 'text' }">{{ lokacija.Naziv }}</td>
+                <td data-title="'Naselje'" sortable="'Naselje.Naziv'" filter="{ 'Naselje.Naziv': 'text' }">{{ lokacija.Naselje.Naziv }}</td>
+                <td data-title="'Grupa lokacije'" sortable="'Grupa.Naziv'" filter="{ 'Grupa.Naziv': 'text' }">{{ lokacija.Grupa.Naziv }}</td>
+
+                <td data-title="''" class="admin-col">
+                    <a class="btn btn-primary" href="{{ registerCtrl.kolicineLink(lokacija) }}">Uredi</a>
+                    <button class="btn btn-danger btn-delete" href="" ng-disabled="!lokacija.OmoguciBrisanje" ng-click="registerCtrl.remove(lokacija)">Obriši</button>
+                </td>
+            </div>
+        </tr>
+    </table>
+    <gzr-tooltip selector="'button[disabled].btn.btn-delete'" title="'Podatak nije moguće obrisati jer je povezan s ostalim podacima'" placement="'top'"></gzr-tooltip>
+    <div class="form-group">
+        <a class="btn btn-primary" href="#/admin/registers/lokacije/add">Dodaj</a>
+    </div>
+</div>
+<gzr-active-menu menu="lokacije"></gzr-active-menu>

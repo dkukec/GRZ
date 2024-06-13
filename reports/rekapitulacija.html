@@ -1,0 +1,128 @@
+﻿<h2>{{rekapitulacijaCtrl.Data.NazivKlijenta}}</h2>
+<h2>Rekapitulacija za razdoblje {{rekapitulacijaCtrl.Data.VrijemeOd | date:"dd.MM.yyyy"  }} - {{rekapitulacijaCtrl.Data.VrijemeDo  | date:"dd.MM.yyyy"}}</h2>
+<p></p>
+<div ng-repeat="obj in rekapitulacijaCtrl.Data.Lokacije">
+    <h4>{{obj.Naziv}} <!--{{rekapitulacijaCtrl.Data.VrijemeOd | date:"dd.MM.yyyy"  }} - {{rekapitulacijaCtrl.Data.VrijemeDo  | date:"dd.MM.yyyy"}}--></h4>
+    <fieldset ng-repeat="tip in obj.Tipovi">
+        <legend>{{tip.Naziv}}</legend>
+        <table class="table table-striped text-right">
+            <colgroup>
+                <col width="60%">
+                <col width="10%">
+                <col width="10%">
+                <col width="10%">
+                <col width="10%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th class="text-left">Naziv aktivnosti</th>
+                    <th class="text-right">Datum realizacije</th>
+                    <th class="text-right">Količina</th>
+                    <th class="text-right">Jedinična cijena</th>
+                    <th class="text-right">Cijena</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="aktivnost in tip.Aktivnosti">
+                    <td class="text-left">{{aktivnost.Naziv}}</td>
+                    <td>{{aktivnost.DatumRealizacije | date:"dd.MM.yyyy" }}</td>
+                    <td>{{aktivnost.KolicinaString}}</td>
+                    <td>{{aktivnost.JedinicnaCijena | number:2}} kn</td>
+                    <td>{{aktivnost.Iznos | number:2}} kn</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td class="text-left" colspan="4">Ukupno</td>
+                    <td>{{tip.Iznos | number:2 }} kn</td>
+                </tr>
+            </tfoot>
+        </table>
+    </fieldset>
+    <table class="table table-striped">
+        <colgroup>
+            <col width="55%">
+            <col width="15%">
+            <col width="15%">
+            <col width="15%">
+        </colgroup>
+        <thead>
+            <tr>
+                <th class="text-left">Tip</th>
+                <th class="text-right">Iznos</th>
+                <th class="text-right">PDV</th>
+                <th class="text-right">Ukupno</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="tip in obj.Tipovi">
+
+                <td class="text-left">
+                    {{tip.Naziv}}
+                </td>
+                <td class="text-right">
+                    {{tip.Iznos | number:2}} Kn
+                </td>
+                <td class="text-right">
+                    {{tip.Pdv | number:2}} Kn
+                </td>
+                <td class="text-right">
+                    {{tip.Ukupno | number:2}} Kn
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td class="text-left">Ukupno {{obj.Mjesto}}</td>
+                <td class="text-right">{{obj.Iznos | number:2}} Kn</td>
+                <td class="text-right">{{obj.Pdv | number:2}} Kn</td>
+                <td class="text-right">{{obj.Ukupno | number:2}} Kn</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<div>
+  
+    <table class="table table-striped">
+        <colgroup>
+            <col width="32%">
+            <col width="12%">
+            <col width="12%">
+            <col width="22%">
+            <col width="22%">
+        </colgroup>
+
+        <tbody>
+            <tr>
+                <td colspan="3" class="text-right">Ukupno</td>
+                <td colspan="2" class="text-right">{{rekapitulacijaCtrl.Data.Iznos | number:2}} Kn</td>
+            </tr>
+            <tr>
+
+                <td colspan="3" class="text-right">PDV</td>
+                <td colspan="2" class="text-right">{{rekapitulacijaCtrl.Data.Pdv | number:2}} Kn</td>
+            </tr>
+            <tr>
+                <td colspan="3" class="text-right">Sveukupno</td>
+                <td colspan="2" class="text-right">{{rekapitulacijaCtrl.Data.Ukupno | number:2}} Kn</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<div ng-repeat="obj in rekapitulacijaCtrl.Data.Lokacije" class="row reportFoto" ng-if="obj.BrojFotografija">
+    <h3 class="col-md-12">Fotografije: {{obj.Naziv}}</h3>
+    <div ng-repeat-start="foto in obj.Fotografije" ng-if="false"></div>
+    <div class="col-md-3 item">
+        <div class="foto" style="background: #FFF url('{{foto.Slika}}') no-repeat center center;"></div>
+        <span class="info">{{foto.Naziv}}</span>
+    </div>
+    <div ng-repeat-end ng-if="false"></div>
+</div>
+
+<div class="form-group">
+    <button class="btn btn-primary" ng-click="rekapitulacijaCtrl.PdfReport()">
+        Pdf Prikaz
+    </button>
+</div>

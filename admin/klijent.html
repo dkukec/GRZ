@@ -1,0 +1,12 @@
+﻿<div class="form-group">
+    <label>Naziv</label>
+    <input name="naziv" type="text" ng-required="true" ng-model="klijentData.naziv" class="form-control" />
+</div>
+<div class="form-group">
+    <label>Dodatne informacije</label>
+    <textarea name="info" ng-required="true" type="text" ng-model="klijentData.info" class="form-control"></textarea>
+</div>
+<div class="form-group">
+    <label>Grupa</label>
+    <select ng-options="grupa.Naziv for grupa in grupe track by grupa.Id" ng-model="klijentData.grupa" class="form-control"></select>
+</div>

@@ -1,0 +1,70 @@
+﻿<!-- BEGIN PAGE SPINNER -->
+<div ng-hide="listCtrl.Trenutni" id="loading">
+    <div ng-spinner-bar class="page-spinner-bar">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
+</div>
+<!-- END PAGE SPINNER -->
+<h2 ng-show="listCtrl.Trenutni">Pregled aktivnog plana</h2>
+
+<div id="filter"></div>
+
+<div  ng-show="listCtrl.Trenutni" id="results">
+
+    <div class="col-md-9">
+        <div ng-repeat="kalendar in listCtrl.kalendari" class="calendarList">
+            <datepicker starting-day="1" custom-class="listCtrl.getClass(date, mode)" show-weeks="false" view="date" ng-model="SelectedDate[kalendar.index]" min-view="date" init-date="kalendar.minDate" watch-direct-changes="true" min-date="kalendar.minDate" max-date="kalendar.maxDate"></datepicker>
+        </div>
+
+
+
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="godina">Godina: </label>
+            <select
+                class="form-control"
+                id="godina"
+                ng-model="listCtrl.godina"
+                ng-options="godina for godina in listCtrl.godine track by godina"
+                ng-change="listCtrl.godinaOnChange()">
+            </select>
+        </div>
+
+        <div>
+            <label>Aktivni kalendar: </label>
+            <div ng-repeat="kalendar in listCtrl.kalendari" class="calendarList" ng-if="listCtrl.trenutniMjesec() == kalendar.index">
+                <datepicker  starting-day="1" custom-class="listCtrl.getClass(date, mode)" show-weeks="false" view="date" ng-model="SelectedDate[kalendar.index]" min-view="date" init-date="kalendar.minDate" watch-direct-changes="true" min-date="kalendar.minDate" max-date="kalendar.maxDate"></datepicker>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="godina">Označeni datum: {{ listCtrl.Trenutni.Datum | date: "dd.MM.yyyy" }}</label>
+        </div>
+        <div class="form-group">
+            <label for="datum">
+                <a class="" href="#/unos/{{ listCtrl.Trenutni.Plan.Id }}">Aktivni plan: {{ listCtrl.Trenutni.Plan.Godina }} - {{ listCtrl.Trenutni.Plan.Revizija }}</a>
+        </div>
+        
+<!--            // ovi linkovi više nemaju smisla, realizacija se otvori klikom na neki datum, izvještaji su u gornjem izborniku, Aktivni plan je link na aktivni plan
+        <div class="form-group">
+            <a class="btn btn-primary" href="#/unos/{{listCtrl.Trenutni.Plan.Id}}">Uredi</a>
+            <a class="btn btn-primary" href="{{listCtrl.getLinkRealizacija()}}" ng-disabled="!listCtrl.Trenutni.Plan.Id">Realizacija</a>
+            <a class="btn btn-primary" href="{{listCtrl.urlBase}}report/#/report" ng-disabled="!listCtrl.Trenutni.Plan.Id">Izvještaji</a>
+        </div>
+            -->
+        <div class="form-group">
+            <label for="godina">Prethodne revizije</label>
+            <table ng-table="listCtrl.tableParams" show-filter="true" class="table">
+                <tr ng-repeat="plan in $data">
+                    <td data-title="'Revizija'" sortable="'Naziv'" filter="{ 'Revizija': 'text' }"><a class="" href="#/unos/{{ plan.Id }}">{{ plan.Naziv }}</a></td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+<gzr-active-menu menu="plan"></gzr-active-menu>

@@ -1,0 +1,27 @@
+﻿<!-- BEGIN PAGE SPINNER -->
+<div ng-hide="registerCtrl.List" id="loading">
+    <div ng-spinner-bar class="page-spinner-bar">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
+</div>
+<!-- END PAGE SPINNER -->
+<h2>Resource</h2>
+<div class="gzr-content">
+    <table ng-table="registerCtrl.tableParams" show-filter="true" class="table">
+        <tr ng-repeat="resource in $data">
+            <td data-title="'Naziv'" sortable="'Naziv'" filter="{ 'Naziv': 'text' }">{{ resource.Naziv }}</td>
+            <td data-title="'Vrijednost'" sortable="'Oznaka'" filter="{ 'Vrijednost': 'text' }">{{ resource.Vrijednost }}</td>
+            <td data-title="''">
+                <a class="btn btn-primary" href="#/admin/resource/edit/{{ resource.Id }}">Uredi</a>
+                <button class="btn btn-danger btn-delete" href="" ng-click="registerCtrl.remove(resource)">Obriši</button>
+            </td>
+        </tr>
+    </table>
+
+    <div class="form-group">
+        <a class="btn btn-primary" href="#/admin/resource/add">Dodaj</a>
+    </div>
+</div>
+<gzr-active-menu menu="postavke"></gzr-active-menu>

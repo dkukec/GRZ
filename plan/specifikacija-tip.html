@@ -1,0 +1,19 @@
+﻿<table class="table table-condensed">
+    <thead>
+        <tr>
+            <td><strong><small>{{tip.Naziv}}</small></strong></td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="vrsta in tip.Kolicine">
+            <td class="col-md-4"><small>{{vrsta.VrstaNaziv}}</small>
+            </td>
+            <td class="col-md-1 text-right"><small>{{vrsta.Broj}}</small>
+            </td>
+            <td class="col-md-1"><small>{{vrsta.VrstaMjernaJedinicaOznaka}}</small>
+            </td>
+            <td class="col-md-6"></td>
+        </tr>
+    </tbody>
+</table>
+

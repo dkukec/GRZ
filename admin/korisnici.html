@@ -1,0 +1,19 @@
+﻿<div class="gzr-content">
+    <form name="register">
+        <fieldset>
+            <legend>Korisnici</legend>
+            <table ng-table="korisniciCtrl.tableParams" show-filter="true" class="table">
+                <tr ng-repeat="korisnik in $data">
+                    <td data-title="'Naziv'" sortable="'Naziv'" filter="{ 'Naziv': 'text' }">{{ korisnik.Naziv }}</td>
+                    <td data-title="'Klijent'" sortable="'KlijentNaziv'" filter="{ 'KlijentNaziv': 'text' }">{{ korisnik.KlijentNaziv }}</td>
+                    <td data-title="'Administrator'" sortable="'Administrator'" filter="{ 'jeAdmin': 'text' }">{{ korisnik.jeAdmin }}</td>
+                    <td data-title="'Samo izvještaji'" sortable="'samoIzvjestaji'" filter="{ 'samoIzvjestaji': 'text' }">{{ korisnik.samoIzvjestaji }}</td>
+                    <td data-title="''">
+                        <a class="btn btn-primary" href="#/admin/korisnici/{{ korisnik.Id }}">Detaljnije</a>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
+<gzr-active-menu menu="admin"></gzr-active-menu>

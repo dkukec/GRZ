@@ -1,0 +1,159 @@
+﻿<!-- BEGIN PAGE SPINNER -->
+<div ng-hide="adminCtrl.id" id="loading">
+    <div ng-spinner-bar class="page-spinner-bar">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
+</div>
+
+<!-- END PAGE SPINNER -->
+<div class="gzr-content">
+    <div class="row">
+        <div ng-show="adminCtrl.Data.id" class="col-md-12">
+            <div class="form-group">
+                <label for="podrucje">#id</label>
+                <pre>{{adminCtrl.Data.id}}</pre>
+            </div>
+        </div>
+        <div ng-show="adminCtrl.Data.href" class="col-md-12">
+            <div class="form-group">
+                <label for="podrucje">href</label>
+                <pre>{{adminCtrl.Data.href}}</pre>
+            </div>
+        </div>
+        <div ng-show="adminCtrl.Data.origin" class="col-md-12">
+            <div class="form-group">
+                <label for="podrucje">origin</label>
+                <pre>{{adminCtrl.Data.origin}}</pre>
+            </div>
+        </div>
+        <div ng-show="adminCtrl.Data.protocol" class="col-md-12">
+            <div class="form-group">
+                <label for="podrucje">protocol</label>
+                <pre>{{adminCtrl.Data.protocol}}</pre>
+            </div>
+        </div>
+        <div ng-show="adminCtrl.Data.username" class="col-md-12">
+            <div class="form-group">
+                <label for="podrucje">username</label>
+                <pre>{{adminCtrl.Data.username}}</pre>
+            </div>
+        </div>
+        <div ng-show="adminCtrl.Data.password" class="col-md-12">
+            <div class="form-group">
+                <label for="podrucje">password</label>
+                <pre>{{adminCtrl.Data.password}}</pre>
+            </div>
+        </div>
+        <div ng-show="adminCtrl.Data.host" class="col-md-12">
+            <div class="form-group">
+                <label for="podrucje">host</label>
+                <pre>{{adminCtrl.Data.host}}</pre>
+            </div>
+        </div>
+        <div ng-show="adminCtrl.Data.hostname" class="col-md-12">
+            <div class="form-group">
+                <label for="podrucje">hostname</label>
+                <pre>{{adminCtrl.Data.hostname}}</pre>
+            </div>
+        </div>
+        <div ng-show="adminCtrl.Data.port" class="col-md-12">
+            <div class="form-group">
+                <label for="podrucje">port</label>
+                <pre>{{adminCtrl.Data.port}}</pre>
+            </div>
+        </div>
+        <div ng-show="adminCtrl.Data.pathname" class="col-md-12">
+            <div class="form-group">
+                <label for="podrucje">pathname</label>
+                <pre>{{adminCtrl.Data.pathname}}</pre>
+            </div>
+        </div>
+        <div ng-show="adminCtrl.Data.search" class="col-md-12">
+            <div class="form-group">
+                <label for="podrucje">search</label>
+                <pre>{{adminCtrl.Data.search}}</pre>
+            </div>
+        </div>
+        <div ng-show="adminCtrl.Data.hash" class="col-md-12">
+            <div class="form-group">
+                <label for="podrucje">hash</label>
+                <pre>{{adminCtrl.Data.hash}}</pre>
+            </div>
+        </div>
+        <div ng-show="adminCtrl.Data.msg" class="col-md-12">
+            <div class="form-group">
+                <label for="podrucje">Message</label>
+                <pre>{{adminCtrl.Data.msg}}</pre>
+            </div>
+        </div>
+        <div ng-show="adminCtrl.Data.url" class="col-md-12">
+            <div class="form-group">
+                <label for="podrucje">url</label>
+                <pre>{{adminCtrl.Data.url}}</pre>
+            </div>
+        </div>
+        <div ng-show="adminCtrl.Data.line" class="col-md-12">
+            <div class="form-group">
+                <label for="podrucje">line</label>
+                <pre>{{adminCtrl.Data.line}}</pre>
+            </div>
+        </div>
+        <div ng-show="adminCtrl.Data.col" class="col-md-12">
+            <div class="form-group">
+                <label for="podrucje">col</label>
+                <pre>{{adminCtrl.Data.col}}</pre>
+            </div>
+        </div>
+        <div ng-show="adminCtrl.Data.stack" class="col-md-12">
+            <div class="form-group">
+                <label for="podrucje">stack</label>
+                <pre>{{adminCtrl.Data.stack}}</pre>
+            </div>
+        </div>
+        <div ng-show="adminCtrl.Data.Naslov" class="col-md-12">
+            <div class="form-group">
+                <label for="podrucje">Naslov</label>
+                <pre>{{adminCtrl.Data.Naslov}}</pre>
+            </div>
+        </div>
+        <div ng-show="adminCtrl.Data.Opis" class="col-md-12">
+            <div class="form-group">
+                <label for="podrucje">Opis</label>
+                <pre>{{adminCtrl.Data.Opis}}</pre>
+            </div>
+        </div>
+        <div ng-show="adminCtrl.Data.parentId" class="col-md-12">
+            <div class="form-group">
+                <label for="podrucje">parentId</label>
+                <div>
+                    <a href="#/admin/problem/{{adminCtrl.Data.parentId}}">{{adminCtrl.Data.parentId}}</a>
+                </div>
+            </div>
+        </div>
+        <div ng-show="adminCtrl.Data.type" class="col-md-12">
+            <div class="form-group">
+                <label for="podrucje">type</label>
+                <pre>{{adminCtrl.Data.type}}</pre>
+            </div>
+        </div>
+        <div ng-show="adminCtrl.Data.created" class="col-md-12">
+            <div class="form-group">
+                <label for="podrucje">created</label>
+                <pre>{{adminCtrl.Data.created | date:'dd.MM.yyyy HH:mm:ss' }}</pre>
+            </div>
+        </div>
+        <div ng-show="adminCtrl.Data.Files" class="col-md-12">
+            <div class="form-group">
+                <label>Files</label>
+                <ul>
+                    <li ng-repeat="file in adminCtrl.Data.Files">
+                        <a href="{{vm.apiRootUrl}}Api/UserFiles/ErrorFile?file={{file}}&problemId={{adminCtrl.Data.id}}" target="_blank">{{file}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<gzr-active-menu menu="admin"></gzr-active-menu>

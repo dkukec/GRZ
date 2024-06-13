@@ -1,0 +1,27 @@
+﻿<!-- BEGIN PAGE SPINNER -->
+<div ng-hide="cjenikCtrl.cjenici" id="loading">
+    <div ng-spinner-bar class="page-spinner-bar">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
+</div>
+<!-- END PAGE SPINNER -->
+<div class="gzr-content" ng-show="cjenikCtrl.cjenici">
+    <h2>Cjenici</h2>
+    <fieldset>
+        <table ng-table="cjenikCtrl.tableParams" show-filter="true" class="table">
+            <tr ng-repeat="cjenik in $data">
+                <td data-title="'Vrijedi od'" sortable="'VrijediOd'" filter="{ 'VrijediOd': 'text' }">{{ cjenik.VrijediOd | date : "dd.MM.yyyy" }}</td>
+                <td data-title="'Vrijedi do'" sortable="'VrijediDo'" filter="{ 'VrijediDo': 'text' }">{{ cjenik.VrijediDo | date : "dd.MM.yyyy" }}</td>
+                <td class="admin-col-2" data-title="' '">
+                    <a class="btn btn-primary" href="#/admin/cjenik/{{ cjenik.Id }}">Uredi</a>
+                    <a class="btn btn-primary" ng-disabled="cjenik.Plan" href="{{cjenikCtrl.apiRoot}}Plan#/unos/0/{{ cjenik.VrijediOd | date : 'yyyy' }}/{{ cjenik.Id }}">Dodaj plan</a>
+            </tr>
+        </table>
+    </fieldset>
+    <div class="form-group">
+        <a class="btn btn-primary" href="#/admin/dodajCjenik">Dodaj novi cjenik</a>
+    </div>
+</div>
+<gzr-active-menu menu="sifrarnici"></gzr-active-menu>

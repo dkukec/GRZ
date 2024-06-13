@@ -1,0 +1,84 @@
+﻿<!-- BEGIN PAGE SPINNER -->
+<div ng-hide="registerCtrl.List" id="loading">
+    <div ng-spinner-bar class="page-spinner-bar">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
+</div>
+<!-- END PAGE SPINNER -->
+<div class="gzr-content" ng-show="registerCtrl.List">
+    <form name="register" class="ng-ignore">
+        <h1>Količine</h1>
+        <p></p>
+        <fieldset>
+            <div class="form-group" ng-hide="registerCtrl.editMode">
+                <label>Lokacija</label>
+                <select class="form-control ng-ignore" ng-change="registerCtrl.changeDs()" ng-model="registerCtrl.Lokacija">
+                    <option ng-repeat="lokacija in registerCtrl.Lokacije | orderBy: 'NaseljeLokacija' track by lokacija.Id" value="{{lokacija.Id}}">{{ lokacija.NaseljeLokacija }}</option>
+                </select>
+            </div>
+            <div class="form-group" ng-show="registerCtrl.editMode">
+                <label>Naziv</label>
+                <input name="naziv" ng-required="true" type="text" ng-model="registerCtrl.Lokacije[registerCtrl.getLokacijaIndex()].Naziv" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Grupa</label>
+                <select ng-disabled="!registerCtrl.editMode" ng-required="true" class="form-control" ng-model="registerCtrl.Lokacije[registerCtrl.getLokacijaIndex()].Grupa.Id">
+                    <option ng-repeat="option in registerCtrl.grupeLokacija | orderBy: 'Naziv' track by option.Id" value="{{option.Id}}">{{option.Naziv}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Naselje</label>
+                <select ng-disabled="!registerCtrl.editMode" ng-required="true" class="form-control" ng-model="registerCtrl.Lokacije[registerCtrl.getLokacijaIndex()].Naselje.Id">
+                    <option ng-repeat="option in registerCtrl.Naselja | orderBy: 'Naziv' track by option.Id" value="{{option.Id}}">{{option.Naziv}}</option>
+                </select>
+            </div>
+
+            <button ng-hide="registerCtrl.editMode" ng-click="registerCtrl.editMode = !registerCtrl.editMode" class="btn btn-primary">Uredi</button>
+
+            <table ng-table-dynamic="registerCtrl.tableParams with registerCtrl.cols" class="table table-condensed table-bordered table-hover">
+                <colgroup>
+                    <col width="80%" />
+                    <col width="10%" />
+                    <col width="5%" />
+                    <col width="5%" />
+                </colgroup>
+                <tr class="ng-table-group" ng-repeat-start="group in $groups">
+                    <td colspan="3">
+                        <a href="" ng-click="group.$hideRows = !group.$hideRows">
+                            <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': group.$hideRows, 'glyphicon-chevron-down': !group.$hideRows }"></span>
+                            <strong>{{ group.value }}</strong>
+                        </a>
+                    </td>
+                </tr>
+                <tr class="ng-hide" ng-hide="group.$hideRows"></tr>
+                <tr ng-hide="group.$hideRows" ng-repeat="kolicina in group.data">
+                    <td>{{kolicina.VrstaNaziv }}</td>
+                    <td>
+                        <input type="text" class="form-control text-right" ng-required="true" min="1" ng-change="registerCtrl.kolicinaOnChange(kolicina)" ng-model="kolicina.Broj" />
+                    </td>
+                    <td>
+                        {{kolicina.VrstaMjernaJedinicaOznaka}}
+                    </td>
+                    <td>
+                        <button ng-click="registerCtrl.obrisiKolicinu(kolicina)" class="btn btn-danger">Obriši</button>
+                    </td>
+                </tr>
+                <tr ng-repeat-end ng-repeat="suma in registerCtrl.sumKolicina(group.data) track by $index">
+                    <td colspan="1" class="text-right">Ukupno</td>
+                    <td class="text-right">{{ suma | number:2 }}</td>
+                    <td>{{ registerCtrl.sumKolicinaMjernaJedinica(group.data, $index) }} </td>
+                </tr>
+            </table>
+        </fieldset>
+
+
+        <div class="form-group">
+            <button class="btn btn-primary" ng-click="registerCtrl.dodajKolicinu()">Dodaj</button>
+            <a ng-disabled="!register.$valid" class="btn btn-primary" ng-click="registerCtrl.save()">Spremi</a>
+            <a class="btn btn-default" href="#/admin/registers/lokacije">Odustani</a>
+        </div>
+    </form>
+</div>
+<gzr-active-menu menu="postavke"></gzr-active-menu>

@@ -1,0 +1,158 @@
+﻿<!-- BEGIN PAGE SPINNER -->
+<div ng-show="realizacijaCtrl.loading" id="loading">
+    <div ng-spinner-bar class="page-spinner-bar">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
+</div>
+<!-- END PAGE SPINNER -->
+<h2 ng-hide="realizacijaCtrl.loading">Realizacija plana</h2>
+<div ng-hide="realizacijaCtrl.loading">
+    <form id="realizacija" name="form" class="ng-ignore" novalidate>
+        <realizacija-plana-filter lokacije="realizacijaCtrl.data.Lokacije" datum="realizacijaCtrl.Datum" on-filter-change="realizacijaCtrl.onFilterChange(lokacije, naselje)"></realizacija-plana-filter>
+        <fieldset class="filter">
+            <div class="col-md-2 margin-bottom-5" ng-repeat="tip in realizacijaCtrl.TipoviFilter">
+                <input class="inline" ng-change="realizacijaCtrl.applyFilter()" ng-disabled="tip.Disabled" id="tip_{{tip.Key}}" type="checkbox" ng-model="tip.Aktivno" />
+                <label class="inline" for="tip_{{tip.Key}}">{{ tip.Naziv }}</label>
+            </div>
+
+            <div class="col-md-2 margin-bottom-5">
+                <input class="inline ng-ignore" ng-change="realizacijaCtrl.applyFilterAll()" id="grupa_all" type="checkbox" ng-model="realizacijaCtrl.FilterAll" />
+                <label class="inline" for="grupa_all"><strong>Sve</strong></label>
+            </div>
+
+            <legend>Aktivnosti: </legend>
+            <table ng-table-dynamic="realizacijaCtrl.tableParams with realizacijaCtrl.cols" class="table table-condensed table-bordered table-hover">
+                <colgroup>                                
+                    <col width="55%" />
+                    <col width="10%" />
+                    <col width="5%" />
+                    <col width="5%" />
+                    <col width="5%" />
+                </colgroup>
+                <tr class="ng-table-group" ng-repeat-start="group in $groups"> <!-- StartForeach: Tipovi-->
+                    <td colspan="5">
+                        <a href="" ng-click="group.$hideRows = !group.$hideRows">
+                            <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': group.$hideRows, 'glyphicon-chevron-down': !group.$hideRows }"></span>
+                            <strong>{{ group.value }}</strong>
+                        </a>
+                    </td>
+                </tr>
+
+                <tr class="ng-hide" ng-hide="group.$hideRows"></tr>                
+                
+                <tr ng-hide="group.$hideRows" ng-repeat-start="(key,value) in group.data| groupBy: 'LokacijaNaseljeNaziv'"> <!-- StartForeach: Lokacije-->
+                    <td colspan="5" class="invert-cell">{{key}}</td>                    
+                </tr>
+                
+                <tr ng-hide="group.$hideRows" ng-repeat-start="kolicina in realizacijaCtrl.data.Tipovi[group.value].Kolicine | filter: { LokacijaNaziv: key }"> <!-- StartForeach: Kolicine-->                
+                    <td colspan="5" class="text-info">{{ kolicina.VrstaNaziv }}: {{ kolicina.Broj }} {{ kolicina.VrstaMjernaJedinicaOznaka }}</td>
+                </tr>
+                <tr ng-hide="group.$hideRows" ng-repeat-end></tr> <!-- EndForeach: Kolicine-->
+                <tr ng-hide="group.$hideRows" ng-repeat-start="aktivnost in value"> <!-- StartForeach: Aktivnosti-->
+                    <td ng-class="realizacijaCtrl.aktivnostClass(aktivnost)" ng-click="realizacijaCtrl.toggleKomentar(aktivnost)">{{aktivnost.Naziv}}</td>
+                    <td>
+                        <input type="text" ng-disabled="aktivnost.Realizirano == false && realizacijaCtrl.data.OmoguciIzmjene == true || !realizacijaCtrl.data.OmoguciIzmjene" class="form-control text-right" ng-change="realizacijaCtrl.kolicinaOnChange(aktivnost)" ng-model="aktivnost.Kolicina" />
+                    </td>
+                    <td>{{aktivnost.MjernaJedinica}}</td>
+                    <td class="text-center">
+                        <div class="">
+                            <span class="">
+                                <input ng-disabled="!realizacijaCtrl.data.OmoguciIzmjene" type="checkbox" ng-change="realizacijaCtrl.realiziranoOnChange(aktivnost)" ng-model="aktivnost.Realizirano">
+                            </span>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="btn btn-primary fileinput-button" ng-if="aktivnost.Datoteka == null" ng-show="aktivnost.Realizirano && aktivnost.RealiziranoOrg">
+                            <i class="fa fa-plus"></i>
+                            <span> Foto</span>
+                            <input type="file" accept="image/*" data-plan-id="{{realizacijaCtrl.planId}}" data-aktivnost-id="{{aktivnost.Id}}" onchange="angular.element(this).scope().$parent.realizacijaCtrl.uploadFile(this);" />
+                        </span>
+                        <img class="smallimg" ng-click="realizacijaCtrl.previewImage(aktivnost.Datoteka)" ng-if="aktivnost.Datoteka" ng-src="{{aktivnost.Datoteka}}" />
+                    </td>
+                </tr>
+                <tr ng-repeat-end ng-if="realizacijaCtrl.showComment(aktivnost)" > <!-- EndForeach: Aktivnosti-->
+                    <td><textarea class="form-control" ng-model="aktivnost.Komentar" ng-change="realizacijaCtrl.komentarOnChange(aktivnost)" ng-disabled="!realizacijaCtrl.data.OmoguciIzmjene"></textarea></td>
+                </tr>
+                <tr ng-repeat-end></tr> <!-- EndForeach: Lokacije-->
+                <tr class="ng-hide" ng-repeat-end ng-hide="group.$hideRows"></tr> <!-- EndForeach: Tipovi-->
+            </table>
+            <div class="form-group">
+                <button class="btn btn-primary" ng-click="realizacijaCtrl.novaAktivnost()">Dodaj novu aktivnost</button>
+                <button class="btn btn-primary" ng-click="realizacijaCtrl.save()">Spremi</button>
+                <button class="btn btn-primary" ng-click="realizacijaCtrl.reportRadniNalog()" type="button">Radni nalog</button>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<div ng-show="realizacijaCtrl.activeImageSrc" class="ngdialog-overlay" ng-click="realizacijaCtrl.closeOverlay()">
+    <div class="jumbotron vertical-center">
+        <div class="container text-center">
+            <img class="userimage" ng-src="{{realizacijaCtrl.activeImageSrc}}" />
+        </div>
+    </div>
+</div>
+<gzr-tooltip selector="'.ng-table .ng-table-group-toggle'" title="'Prikaži / sakrij grupe'" placement="'top'"></gzr-tooltip>
+<gzr-active-menu menu="plan"></gzr-active-menu>
+<script type="text/ng-template" id="modalDialogId">
+    {{ model.Ignore = "" }}
+    <div class="ngdialog-message">
+        <h3>Unos nove aktivnosti</h3>
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-12 control-label">Lokacija</label>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <ui-select ng-model="model.Lokacija" theme="select2" ng-disabled="disabled" style="width: 100%">
+                        <ui-select-match placeholder="Odaberite lokaciju">{{$select.selected.Naziv}}</ui-select-match>
+                        <ui-select-choices group-by="'Tip'" repeat="lokacija in ngDialogData.data.Lokacije | filter: $select.search | orderBy: ['Naziv']">
+                            <div ng-bind-html="lokacija.Naziv | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-12 control-label">Aktivnost</label>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <ui-select ng-model="model.Aktivnost" theme="select2" ng-disabled="disabled" style="width: 100%">
+                        <ui-select-match placeholder="Odaberite aktivnost">{{$select.selected.Naziv}}</ui-select-match>
+                        <ui-select-choices group-by="'Tip'" repeat="aktivnost in ngDialogData.data.Aktivnosti | filter: $select.search | orderBy: ['Tip', 'Naziv']">
+                            <div ng-bind-html="aktivnost.Naziv | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-12 control-label">Količina</label>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <input type="text" ng-model="model.Kolicina" class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-12 control-label">Mjerna jedinica</label>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    {{ model.Aktivnost.MjernaJedinica }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ngdialog-buttons form-group">
+        <button ng-click="confirm(model)" class="btn btn-primary" type="button">Dodaj</button>
+        <button ng-click="closeThisDialog('button')" class="btn btn-default" type="button">Odustani</button>
+    </div>
+</script>

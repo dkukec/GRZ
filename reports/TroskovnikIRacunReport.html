@@ -1,0 +1,90 @@
+﻿<h2>{{troskovnikIRacunCtrl.NazivKlijenta}}</h2>
+<h2>Račun za razdoblje {{troskovnikIRacunCtrl.VrijemeOd | date:"dd.MM.yyyy"  }} - {{troskovnikIRacunCtrl.VrijemeDo  | date:"dd.MM.yyyy"}}</h2> 
+<p></p>
+<div ng-repeat="obj in troskovnikIRacunCtrl.Podaci">
+    <h4>{{obj.Mjesto}} <!--{{troskovnikIRacunCtrl.VrijemeOd | date:"dd.MM.yyyy"  }} - {{troskovnikIRacunCtrl.VrijemeDo  | date:"dd.MM.yyyy"}}--></h4>
+    
+
+
+    <table class="table table-striped">
+        <colgroup>
+            <col width="32%">
+            <col width="12%">
+            <col width="12%">
+            <col width="22%">
+            <col width="22%">
+        </colgroup>
+        <thead>
+            <tr>
+
+                <th class="text-left">Vrsta</th>
+                <th class="text-right">Količina</th>
+                <th class="text-right">Iznos</th>
+                <th class="text-right">PDV</th>
+                <th class="text-right">Ukupno</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="vrsta in obj.Vrste">
+
+                <td class="text-left">{{vrsta.Tip}}
+                </td>
+                <td class="text-right">{{vrsta.Kolicina}} {{vrsta.MjernaJedinica}}
+                </td>
+                <td class="text-right">{{vrsta.Iznos | number:2}} Kn
+                </td>
+                <td class="text-right">{{vrsta.PDV | number:2}} Kn
+                </td>
+                <td class="text-right">{{vrsta.Ukupno | number:2}} Kn
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td class="text-left">Ukupno {{obj.Mjesto}}</td>
+                <td class="text-left"></td>
+                <td class="text-right">{{obj.Ukupno.Iznos | number:2}} Kn</td>
+                <td class="text-right">{{obj.Ukupno.PDV | number:2}} Kn</td>
+                <td class="text-right">{{obj.Ukupno.Ukupno | number:2}} Kn</td>
+            </tr>
+        </tfoot>
+    </table>
+
+
+</div>
+
+<div>
+
+    <table class="table table-striped">
+        <colgroup>
+            <col width="32%">
+            <col width="12%">
+            <col width="12%">
+            <col width="22%">
+            <col width="22%">
+        </colgroup>
+
+        <tbody>
+            <tr>
+                <td colspan="3"  class="text-right">Ukupno</td>
+                <td colspan="2"  class="text-right">{{troskovnikIRacunCtrl.UkupniIznosZaSveLokacije | number:2}} Kn</td>
+            </tr>
+            <tr>
+
+                <td colspan="3"  class="text-right">PDV</td>
+                <td colspan="2"  class="text-right">{{troskovnikIRacunCtrl.UkupniPDVZaSveLokacije | number:2}} Kn</td>
+            </tr>
+            <tr>
+                <td colspan="3"  class="text-right">Sveukupno</td>
+                <td colspan="2"  class="text-right">{{troskovnikIRacunCtrl.Svekupno | number:2}} Kn</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+<div class="form-group">
+    <button class="btn btn-primary" ng-click="troskovnikIRacunCtrl.PdfReport()">
+        Pdf Prikaz
+    </button>
+</div>

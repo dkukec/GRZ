@@ -1,0 +1,101 @@
+﻿<!-- BEGIN PAGE SPINNER -->
+<div ng-hide="reportCtrl.MoguceVrijednostiReport" id="loading">
+    <div ng-spinner-bar class="page-spinner-bar">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
+</div>
+<!-- END PAGE SPINNER -->
+<div>
+
+    <div class="">
+
+        <h3>Izvještaj</h3>
+        <form class="form-horizontal" name="myForm" novalidate>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Odaberi vrstu izvještaja</label>
+                <div class="col-sm-9">
+                    <select class="form-control" ng-model="reportCtrl.IzvjestajId" required>
+                        <option ng-repeat="obj in reportCtrl.MoguceVrijednostiReport" value="{{obj.Id}}">{{obj.Naziv}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group" ng-show="reportCtrl.PrikaziNaselje()">
+                <label class="col-sm-3 control-label">Odaberi naselje</label>
+                <div class="col-sm-9">
+                    <select class="form-control" ng-model="reportCtrl.NaseljeId" required>
+                        <option ng-repeat="obj in reportCtrl.Naselja" value="{{obj.Id}}">{{obj.Naziv}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group" ng-show="reportCtrl.PrikaziCjenike()">
+                <label class="col-sm-3 control-label">Odaberi grupu</label>
+                <div class="col-sm-9">
+                    <select class="form-control" ng-model="reportCtrl.CjenikGrupa" required>
+                        <option ng-repeat="obj in reportCtrl.CjenikGrupe" value="{{obj}}">{{obj}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group" ng-show="reportCtrl.PrikaziLokaciju()">
+                <label class="col-sm-3 control-label">Odaberi lokaciju</label>
+                <div class="col-sm-9">
+                    <select class="form-control" ng-model="reportCtrl.LokacijaId" required>
+                        <option ng-repeat="obj in reportCtrl.getLokacije()" value="{{obj.Id}}">{{obj.Naziv}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group" ng-show="reportCtrl.PrikaziGodine()">
+                <label class="col-sm-3 control-label">Godina</label>
+                <div class="col-sm-9">
+                    <select class="form-control" ng-model="reportCtrl.Godina" required>
+                        <option ng-repeat="obj in reportCtrl.getGodine()" value="{{obj}}">{{obj}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group" ng-show="reportCtrl.PrikaziGrupeAktivnosti()">
+                <label class="col-sm-3 control-label">Grupa aktivnosti</label>
+                <div class="col-sm-9">
+                    <select class="form-control" ng-model="reportCtrl.GrupaAktivnosti" required>
+                        <option ng-repeat="obj in reportCtrl.getGrupeAktivnosti()" value="{{obj}}">{{obj}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group" ng-show="reportCtrl.PrikaziDatume()">
+                <label class="col-sm-3 control-label">Odaberi vremenski period</label>
+                <div class="col-sm-2">
+                    <input ng-click="reportCtrl.reparseDateInput()" type="text" format="dd.MM.yyyy" class="form-control" partial="true" view="date" min-view="date" max-view="date" ng-model="reportCtrl.DatumOd" auto-close="true" date-time>
+                </div>
+                <div class="col-sm-2">
+                    <input ng-click="reportCtrl.reparseDateInput()" type="text" format="dd.MM.yyyy" class="form-control" partial="true" view="date" min-view="date" max-view="date" ng-model="reportCtrl.DatumDo" auto-close="true" date-time>
+                </div>
+            </div>
+
+            <div class="form-group" ng-show="reportCtrl.PrikaziCjenike()">
+                <label class="col-sm-3 control-label">Odaberi cjenik</label>
+                <div class="col-sm-9">
+                    <select class="form-control" ng-model="reportCtrl.CjenikId" required>
+                        <option required ng-repeat="obj in reportCtrl.Cjenici" value="{{obj.CjenikId}}">{{obj.Naziv}}</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <!--{{myForm.$valid}}-->
+            <div class="form-group">
+                <div class="col-sm-10">
+                    <button class="btn btn-primary" ng-click="reportCtrl.send()">
+                        Prikaz
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<gzr-active-menu menu="izvjestaji"></gzr-active-menu>

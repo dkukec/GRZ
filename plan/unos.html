@@ -1,0 +1,219 @@
+﻿<!-- BEGIN PAGE SPINNER -->
+<div ng-show="unosCtrl.loading" id="loading">
+    <div ng-spinner-bar class="page-spinner-bar">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
+</div>
+<!-- END PAGE SPINNER -->
+<div class="gzr-content" ng-hide="unosCtrl.loading">
+    <h2>{{ unosCtrl.title }}</h2>
+    <br />
+    <div class="col-md-12 row">
+        <form id="unos_plana" name="form" novalidate>
+            <div class="form-group row">
+                <div class="col-md-2">
+                    <label class="col-sm-2 control-label">Grupiraj</label>
+
+                    <select class="form-control" ng-model="unosCtrl.groupBy">
+                        <option ng-repeat="obj in unosCtrl.planGrupe" value="{{obj}}">{{obj}}</option>
+                    </select>
+
+                </div>
+
+                <div class="col-md-2">
+                    <label for="godina">Godina</label>
+                    <input type="text" class="form-control" id="godina" ng-model="unosCtrl.godina" required disabled />
+                </div>
+                <div class="col-md-2">
+                    <label for="godina">Revizija</label>
+                    <input type="text" class="form-control" id="revizija" ng-model="unosCtrl.revizija" disabled />
+                </div>
+                <div class="col-md-2" ng-show="unosCtrl.zakljucan">
+                    <h2 class="glyphicon glyphicon-lock" aria-hidden="true" title="Plan je zaključan i ne može se mijenjati."></h2>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-md-12 row">
+
+        <div class="row">
+            <div class="dropdown plan-dropdown col-md-2">
+                <button class="btn btn-primary dropdown-toggle btn-sm" type="button" data-toggle="dropdown">
+                    {{unosCtrl.selectedNaselje}}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li ng-repeat="naselje in unosCtrl.naselja"><a href ng-click="unosCtrl.changeTabNaselje(naselje.Id)">{{naselje.Naziv}}</a></li>
+                </ul>
+            </div>
+            <div class="dropdown plan-dropdown col-md-10">
+                <button class="btn btn-primary dropdown-toggle btn-sm" type="button" data-toggle="dropdown">
+                    {{unosCtrl.selectedLokacija}}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li ng-repeat="lok in unosCtrl.getLokacije()"><a href ng-click="unosCtrl.changeTab(lok.Id)">{{lok.Naziv}}</a></li>
+                </ul>
+                <ul class="list-inline pull-right">
+                    <li>
+                        <a class="btn btn-primary btn-xs" ng-href="{{unosCtrl.novaRevizijaLink()}}" ng-show="unosCtrl.novi">Nova revizija za {{unosCtrl.godina}}</a>
+                    </li>
+                    <li>
+                        <button class="btn btn-primary btn-xs" type="button" ng-click="unosCtrl.save()" ng-disabled="unosCtrl.zakljucan">Spremi</button>
+                    </li>
+                    <li>
+                        <button class="btn btn-primary btn-xs" type="button" ng-click="unosCtrl.lock()" ng-disabled="unosCtrl.provjeriZakljucaj(form.$dirty, form)">Zaključaj</button>
+                    </li>
+                    <li>
+                        <button class="btn btn-primary btn-xs" type="button" ng-click="unosCtrl.showSumarniReport()" ng-if="unosCtrl.zakljucan">Pregled plana - SUMIRANI</button>
+                    </li>
+                    <li>
+                        <button class="btn btn-primary btn-xs" type="button" ng-click="unosCtrl.showOpsirniReport()" ng-if="unosCtrl.zakljucan">Pregled plana - DETALJNI</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="buffer-top row"></div>
+        <div ng-repeat="lok in unosCtrl.lokacije" ng-if="unosCtrl.isTabSet(lok.Id)" class="panel panel-default buffer-top">
+            <div class="panel-body clearfix">
+                <ul class="list-unstyled col-md-12">
+                    <div>
+                        <li ng-repeat="tip in unosCtrl.getGroup(lok)" class="buffer-top-sm">
+                            <gzr-accordion heading="tip.Naziv">
+                                <em>
+                                    <specifikacija-tip tip="tip"></specifikacija-tip>
+                                </em>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <em>Aktivnosti</em>
+                                        <table class="table table-condensed">
+                                            <thead>
+                                                <tr>
+                                                    <th>Naziv</th>
+                                                    <th class="text-right">Količina</th>
+                                                    <th>Mj.jedinica</th>
+                                                    <th class="class=" text-right" title="Broj ponavljanja u godini">Učestalost</th>
+                                                    <th class="text-right">Jed.cijena</th>
+                                                    <th class="text-right">Cijena</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="aktivnost in tip.Aktivnosti" ng-show="aktivnost.Prikazi">
+                                                    <td class="col-md-5">
+                                                        <span>{{aktivnost.Naziv}}</span>
+                                                    </td>
+                                                    <td class="col-md-1">
+                                                        <input type="text" ng-disabled="unosCtrl.zakljucan" ng-model="aktivnost.Kolicina" class="text-right min-width-80 form-control" />
+                                                    </td>
+                                                    <td class="col-md-1">
+                                                        <span>{{aktivnost.MjernaJedinica}}</span>
+                                                    </td>
+                                                    <td class="col-md-1">
+                                                        <input type="text" ng-disabled="unosCtrl.zakljucan" ng-model="aktivnost.BrojPonavljanja" class="text-right form-control" />
+                                                    </td>
+                                                    <td class="col-md-2 text-right">
+                                                        <span>{{aktivnost.JedinicnaCijena | number:2}} kn</span>
+                                                    </td>
+                                                    <td class="col-md-2 text-right">
+                                                       <!-- <span>{{aktivnost.JedinicnaCijena*aktivnost.Kolicina*aktivnost.BrojPonavljanja | number:2}} kn</span> -->
+                                                        <span class="block min-width-80">{{unosCtrl.sumCijena(aktivnost) | number:2 }} kn</span>
+                                                    </td>
+                                                    <td colspan="7">
+                                                        <span class="btn btn-danger" ng-hide="unosCtrl.zakljucan" ng-click="unosCtrl.ukloniAktivnost(aktivnost)">Ukloni</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot ng-hide="unosCtrl.zakljucan">
+                                                <tr>
+                                                    <td>
+                                                        <div class="dropdown plan-dropdown">
+                                                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                                                                Dodaj aktivnost
+                                                                <span class="caret"></span>
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                <li ng-repeat="aktivnost in tip.Aktivnosti"><a href ng-hide="aktivnost.Prikazi || aktivnost.JedinicnaCijena == 0" ng-click="unosCtrl.prikaziAktivnost(aktivnost)">{{aktivnost.Naziv}}</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </gzr-accordion>
+                        </li>
+                    </div>
+                </ul>
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Proračun</div>
+                        <div class="panel-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Tip
+                                        </th>
+                                        <th class="text-right">
+                                            Cijena
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="tip in lok.Tipovi">
+                                        <td>{{tip.Naziv}}</td>
+                                        <td class="text-right">{{unosCtrl.getTotalForTip(lok.Id,tip.Naziv) | currency}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Proračun</div>
+                        <div class="panel-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            &nbsp;
+                                        </th>
+                                        <th class="text-right">
+                                            Cijena
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <td><strong>Osnovica</strong></td>
+                                        <td class="text-right">{{unosCtrl.getTotalForLokacija(lok.Id) | currency}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>PDV</td>
+                                        <td class="text-right">{{unosCtrl.getTotalForLokacija(lok.Id)*0.25 | currency}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Ukupno {{lok.Naziv}}</strong></td>
+                                        <td class="text-right">{{unosCtrl.getTotalForLokacija(lok.Id)*1.25 | currency}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Ukupno sve lokacije</strong></td>
+                                        <td class="text-right">{{unosCtrl.getTotal()*1.25 | currency}}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<gzr-active-menu menu="plan"></gzr-active-menu>

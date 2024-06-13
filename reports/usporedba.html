@@ -1,0 +1,76 @@
+﻿<h2>{{usporedbaPlanaCtrl.Data.Klijent}}</h2>
+<h2>Usporedba planiranih i izvršenih aktivnosti</h2>
+<p>{{usporedbaPlanaCtrl.Data.Plan}}</p>
+<div ng-repeat="lokacija in usporedbaPlanaCtrl.Data.Lokacije">
+    <h4>{{lokacija.Naziv}}</h4>
+    <fieldset ng-repeat="tip in lokacija.Tipovi">
+        <legend>{{tip.Naziv}}</legend>
+        <div class="row col-md-5">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-left">Vrsta</th>
+                        <th class="text-right">Kolicina</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="vrsta in tip.Vrste">
+                        <td class="text-left">{{vrsta.Naziv}}</td>
+                        <td class="text-right">{{vrsta.Kolicina}} </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <table class="table table-striped">
+            <colgroup>
+                <col width="40%">
+                <col width="15%">
+                <col width="15%">
+                <col width="15%">
+                <col width="15%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th class="text-left"></th>
+                    <th class="text-right">Planirana kolicina</th>
+                    <th class="text-right">Realizirana kolicina</th>
+                    <th class="text-right">Planirana cijena</th>
+                    <th class="text-right">Realizirana cijena</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="aktivnost in tip.Aktivnosti">
+
+                    <td class="text-left">
+                        {{aktivnost.Naziv}}
+                    </td>
+                    <td class="text-right">
+                        {{aktivnost.PlaniranaKolicina | number:0}} {{aktivnost.MjernaJedinica }}
+                    </td>
+                    <td class="text-right">
+                        {{aktivnost.RealiziranaKolicina | number:0}} {{aktivnost.MjernaJedinica }}
+                    </td>
+                    <td class="text-right">
+                        {{aktivnost.PlaniranaCijena | number:2}} Kn
+                    </td>
+                    <td class="text-right">
+                        {{aktivnost.RealiziranaCijena | number:2}} Kn
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td class="text-left" colspan="3">Ukupno {{lokacija.Naziv}}</td>
+                    <td class="text-right">{{tip.Planirano | number:2}} Kn</td>
+                    <td class="text-right">{{tip.Realizirano | number:2}} Kn</td>
+                </tr>
+            </tfoot>
+        </table>
+    </fieldset>
+</div>
+
+<div class="form-group">
+    <button class="btn btn-primary" ng-click="usporedbaPlanaCtrl.PdfReport()">
+        Pdf Prikaz
+    </button>
+</div>

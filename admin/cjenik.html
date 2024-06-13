@@ -1,0 +1,75 @@
+﻿<!-- BEGIN PAGE SPINNER -->
+<div ng-hide="cjenikCtrl.Stavke" id="loading">
+    <div ng-spinner-bar class="page-spinner-bar">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
+</div>
+<!-- END PAGE SPINNER -->
+<div class="gzr-content" ng-show="cjenikCtrl.Stavke">
+    <h2>Cjenik</h2>
+    <form name="cjenik" class="ng-ignore">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="podrucje">Vrijedi od: </label>
+                    <input ng-change="cjenikCtrl.changeVrijemeOd()" type="text" format="dd.MM.yyyy" class="form-control" partial="true" view="date" min-view="date" max-view="date" ng-model="cjenikCtrl.DatumOd" auto-close="false" date-time>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="podrucje">Vrijedi do: </label>
+                    <input ng-change="cjenikCtrl.changeVrijemeDo()" type="text" format="dd.MM.yyyy" class="form-control" partial="true" view="date" min-view="date" max-view="date" ng-model="cjenikCtrl.DatumDo" auto-close="false" date-time>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="podrucje">PDV: </label>
+                    <input ng-change="cjenikCtrl.changeVrijemeDo()" type="text" class="form-control" ng-model="cjenikCtrl.Pdv">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <div class="form-control fake-control">
+                        <input id="filter" ng-change="cjenikCtrl.applyFilter()" type="checkbox" class="ng-ignore" ng-model="cjenikCtrl.filter">
+                        <label for="filter">Aktivnosti bez cijene</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <fieldset>
+            <legend>Stavke cjenika</legend>
+            <table ng-table-dynamic="cjenikCtrl.tableParams with cjenikCtrl.cols" class="table table-condensed table-bordered table-hover">
+                <colgroup>
+                    <col width="80%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                </colgroup>
+                <tr class="ng-table-group" ng-repeat-start="group in $groups">
+                    <td colspan="3">
+                        <a href="" ng-click="group.$hideRows = !group.$hideRows">
+                            <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': group.$hideRows, 'glyphicon-chevron-down': !group.$hideRows }"></span>
+                            <strong>{{ group.value }}</strong>
+                        </a>
+                    </td>
+                </tr>
+                <tr class="ng-hide" ng-hide="group.$hideRows"></tr>
+                <tr ng-hide="group.$hideRows" ng-repeat="stavkaCjenika in group.data" ng-repeat-end>
+                    <td>{{ stavkaCjenika.Aktivnost }}</td>
+                    <td>
+                        <input type="text" class="form-control text-right" ng-required="true" min="1" ng-change="cjenikCtrl.jedinicnaCijenaChange(stavkaCjenika)" ng-model="stavkaCjenika.JedinicnaCijena" />
+                    </td>
+                    <td>{{ stavkaCjenika.MjernaJedninicaOznaka}}</td>
+                </tr>
+            </table>
+            <gzr-tooltip selector="'.ng-table .ng-table-group-toggle'" title="'Prikaži / sakrij grupe'" placement="'top'"></gzr-tooltip>
+        </fieldset>
+        <div class="form-group">
+            <a ng-disabled="!cjenik.$valid" class="btn btn-primary" ng-click="cjenikCtrl.save()">Spremi</a>
+            <a href="#/admin/cjenici" class="btn btn-default">Odustani</a>
+        </div>
+    </form>
+</div>
+<gzr-active-menu menu="sifrarnici"></gzr-active-menu>

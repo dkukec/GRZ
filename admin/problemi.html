@@ -1,0 +1,33 @@
+﻿<!-- BEGIN PAGE SPINNER -->
+<div ng-hide="adminCtrl.List" id="loading">
+    <div ng-spinner-bar class="page-spinner-bar">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
+</div>
+<!-- END PAGE SPINNER -->
+<div class="gzr-content">
+    <form name="register">
+        <fieldset>
+            <legend>Problemi</legend>
+            <table ng-table="adminCtrl.tableParams" show-filter="true" class="table">
+                <tr ng-repeat="problem in $data">
+                    <td data-title="'Id'" sortable="'Id'" filter="{ 'Id': 'text' }">{{ problem.Id }}</td>
+                    <td data-title="'Type'" sortable="'Type'" filter="{ 'Type': 'text' }">{{ problem.Type }}</td>
+                    <td data-title="'Href'" sortable="'Href'" filter="{ 'Href': 'text' }">{{ problem.Href }}</td>
+                    <td data-title="'Username'" sortable="'Username'" filter="{ 'Username': 'text' }">{{ problem.Username }}</td>
+                    <td data-title="'Created'" sortable="'Created'" filter="{ 'Created': 'text' }">{{ problem.Created | date:'dd.MM.yyyy HH:mm:ss'}}</td>
+
+                    <td data-title="'Admin'">
+                        <a class="btn btn-primary" href="#/admin/problem/{{ problem.Id }}">Detaljnije</a>
+                    </td>
+                </tr>
+            </table>
+
+        </fieldset>
+
+
+    </form>
+</div>
+<gzr-active-menu menu="admin"></gzr-active-menu>

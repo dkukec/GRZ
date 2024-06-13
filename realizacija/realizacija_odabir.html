@@ -1,0 +1,27 @@
+﻿<!-- BEGIN PAGE SPINNER -->
+<div ng-hide="realizacijaCtrl.DataList" id="loading">
+    <div ng-spinner-bar class="page-spinner-bar">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
+</div>
+<!-- END PAGE SPINNER -->
+<div ng-show="realizacijaCtrl.DataList">
+    <form id="realizacija" name="form" novalidate>
+        <fieldset>
+            <legend>Popis realizacija plana {{ realizacijaCtrl.Godina }} - {{ realizacijaCtrl.Revizija }}</legend>
+            <table ng-table="realizacijaCtrl.tableParams" show-filter="true" class="table">
+                <tr ng-repeat="plan in $data">
+                    <td data-title="'Datum'" sortable="'datum2'" filter="{ 'datum': 'text' }">{{ plan.datum }}
+                    </td>
+                    <td data-title="'Akcije'" class="text-center">
+                        <a href="#/realizacija/pregled/{{ realizacijaCtrl.PlanId }}/{{ plan.datum2 }}" class="btn btn-primary">Uredi</a>
+                    </td>
+                </tr>
+            </table>
+            <a ng-class="{ disabled: realizacijaCtrl.OnemoguciNovi }" class="btn btn-primary" href="{{realizacijaCtrl.RootUrl}}realizacija/#/realizacija/pregled/{{realizacijaCtrl.PlanId}}">Novi plan</a>
+            <button class="btn btn-primary">Izvještaji</button>
+        </fieldset>
+    </form>
+</div>

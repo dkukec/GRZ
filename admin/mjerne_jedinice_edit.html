@@ -1,0 +1,18 @@
+﻿<div class="gzr-content">
+    <h2>Uređivanje mjerne jedinice</h2>
+    <form name="register">
+        <div class="form-group">
+            <label>Naziv</label>
+            <input ng-required="true" type="text" ng-model="registerCtrl.naziv" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Oznaka</label>
+            <input ng-required="true" type="text" ng-model="registerCtrl.oznaka" class="form-control" />
+        </div>
+        <div class="form-group">
+            <a ng-disabled="!register.$valid" class="btn btn-primary" ng-click="registerCtrl.save()">Spremi</a>
+            <a class="btn btn-default" href="#/admin/registers/mjerne_jedinice">Odustani</a>
+        </div>
+    </form>
+</div>
+<gzr-active-menu menu="admin"></gzr-active-menu>
